@@ -1,8 +1,12 @@
+from os import path
+
+XML_DIR = path.join(path.dirname(__file__), "../aloha_xml")
+
 ### Simulation envs fixed constants
 DT = 0.02
 
 # 16 JOINTS
-JOINTS = [
+ALOHA_JOINTS = [
     # absolute joint position
     "left_arm_waist",
     "left_arm_shoulder",
@@ -26,7 +30,7 @@ JOINTS = [
 ]
 
 # 14 ACTUATORS. Two Fingers of each gripper are controlled by one actuator
-ACTUATORS = [
+ALOHA_ACTUATORS = [
     # position and quaternion for end effector
     "left_arm_waist",
     "left_arm_shoulder",
@@ -72,6 +76,49 @@ INITIAL_ARM_QPOS = [
     0,
     PUPPET_GRIPPER_QPOS_OPEN,
     PUPPET_GRIPPER_QPOS_OPEN,
+]
+
+INITIAL_CUBES_QPOS = [
+    # red cube
+    0,
+    0,
+    0.02,
+    1,
+    0,
+    0,
+    0,
+    # green cube
+    0.2,
+    0.2,
+    0.02,
+    1,
+    0,
+    0,
+    0,
+    # blue cube
+    0.2,
+    -0.2,
+    0.02,
+    1,
+    0,
+    0,
+    0,
+    # yellow cube
+    -0.2,
+    0.2,
+    0.02,
+    1,
+    0,
+    0,
+    0,
+    # purple cube
+    -0.2,
+    -0.2,
+    0.02,
+    1,
+    0,
+    0,
+    0,
 ]
 
 ############################ Helper functions ############################

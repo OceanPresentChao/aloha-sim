@@ -1,5 +1,6 @@
 import gymnasium
 from gymnasium.envs.mujoco import MujocoEnv
+from os import path
 import numpy as np
 import math
 import mujoco
@@ -9,21 +10,23 @@ from .constants import (
     NORMALIZE_PUPPET_GRIPPER_QPOS,
     DT,
     INITIAL_ARM_QPOS,
-    JOINTS,
-    ACTUATORS,
+    ALOHA_JOINTS,
+    ALOHA_ACTUATORS,
 )
+from .task.base import AlohaTask
 
 
 class AlohaEnv(MujocoEnv):
     def __init__(
         self,
-        xml_file: str = "scene.xml",
+        task: AlohaTask,
         frame_skip: int = 5,
         observation_width: int = 640,
         observation_height: int = 480,
         render_mode: str = "rgb_array",
         **kwargs,
     ):
+        self.task = task
         self.observation_width = observation_width
         self.observation_height = observation_height
         ALOHA_OBS_IMAGE = gymnasium.spaces.Box(
@@ -37,13 +40,13 @@ class AlohaEnv(MujocoEnv):
                 "qpos": gymnasium.spaces.Box(
                     low=-math.pi,
                     high=math.pi,
-                    shape=(len(ACTUATORS), 1),
+                    shape=(len(ALOHA_ACTUATORS), 1),
                     dtype=np.float64,
                 ),
                 "qvel": gymnasium.spaces.Box(
                     low=-math.inf,
                     high=math.inf,
-                    shape=(len(ACTUATORS),),
+                    shape=(len(ALOHA_ACTUATORS),),
                     dtype=np.float64,
                 ),
                 "images": gymnasium.spaces.Dict(
@@ -57,7 +60,7 @@ class AlohaEnv(MujocoEnv):
             }
         )
         self.action_space = gymnasium.spaces.Box(
-            low=-math.pi, high=math.pi, shape=(len(ACTUATORS),), dtype=np.float64
+            low=-math.pi, high=math.pi, shape=(len(ALOHA_ACTUATORS),), dtype=np.float64
         )
         self.metadata = {
             "render_modes": [
@@ -69,7 +72,7 @@ class AlohaEnv(MujocoEnv):
         }
         MujocoEnv.__init__(
             self,
-            xml_file,
+            self.get_xml_file(),
             frame_skip,
             observation_space=self.observation_space,
             render_mode=render_mode,
@@ -79,6 +82,9 @@ class AlohaEnv(MujocoEnv):
         )
 
         assert self.render_mode in self.metadata["render_modes"]
+
+    def get_xml_file(self) -> str:
+        return self.task.get_xml_file()
 
     def get_qpos(self):
         # len: len(JOINTS)
@@ -145,15 +151,14 @@ class AlohaEnv(MujocoEnv):
         return obs
 
     def get_reward(self):
-        return 0
+        return self.task.get_reward(self)
 
     def render(self):
         return self.get_image("collaborator_pov")
 
     def reset_model(self):
         # key_ctrl = self.model.key_ctrl[0 * self.model.nu : (0 + 1) * self.model.nu]
-        init_qpos = np.array(INITIAL_ARM_QPOS, dtype=np.float64)
-        init_qvel = np.zeros(shape=(len(JOINTS),), dtype=np.float64)
+        init_qpos, init_qvel = self.task.get_initial_state()
         self.set_state(init_qpos, init_qvel)
         return self.get_obs()
 

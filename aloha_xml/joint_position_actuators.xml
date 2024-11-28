@@ -1,19 +1,19 @@
 <mujoco>
   <actuator>
-    <position class="waist" name="left/waist" joint="left/waist"/>
-    <position class="shoulder" name="left/shoulder" joint="left/shoulder"/>
-    <position class="elbow" name="left/elbow" joint="left/elbow"/>
-    <position class="forearm_roll" name="left/forearm_roll" joint="left/forearm_roll"/>
-    <position class="wrist_angle" name="left/wrist_angle" joint="left/wrist_angle"/>
-    <position class="wrist_rotate" name="left/wrist_rotate" joint="left/wrist_rotate"/>
+    <position class="waist" name="left/waist" joint="left/waist"  ctrlrange="-3.14158 3.14158"/>
+    <position class="shoulder" name="left/shoulder" joint="left/shoulder" ctrlrange="-1.85005 1.25664" />
+    <position class="elbow" name="left/elbow" joint="left/elbow" ctrlrange="-1.76278 1.6057" />
+    <position class="forearm_roll" name="left/forearm_roll" joint="left/forearm_roll" ctrlrange="-3.14158 3.14158" />
+    <position class="wrist_angle" name="left/wrist_angle" joint="left/wrist_angle" ctrlrange="-1.8675 2.23402"/>
+    <position class="wrist_rotate" name="left/wrist_rotate" joint="left/wrist_rotate" ctrlrange="-3.14158 3.14158"/>
     <position class="finger" name="left/gripper" joint="left/left_finger"/>
 
-    <position class="waist" name="right/waist" joint="right/waist"/>
-    <position class="shoulder" name="right/shoulder" joint="right/shoulder"/>
-    <position class="elbow" name="right/elbow" joint="right/elbow"/>
-    <position class="forearm_roll" name="right/forearm_roll" joint="right/forearm_roll"/>
-    <position class="wrist_angle" name="right/wrist_angle" joint="right/wrist_angle"/>
-    <position class="wrist_rotate" name="right/wrist_rotate" joint="right/wrist_rotate"/>
+    <position class="waist" name="right/waist" joint="right/waist" ctrlrange="-3.14158 3.14158"/>
+    <position class="shoulder" name="right/shoulder" joint="right/shoulder" ctrlrange="-1.85005 1.25664"/>
+    <position class="elbow" name="right/elbow" joint="right/elbow" ctrlrange="-1.76278 1.6057"/>
+    <position class="forearm_roll" name="right/forearm_roll" joint="right/forearm_roll" ctrlrange="-3.14158 3.14158"/>
+    <position class="wrist_angle" name="right/wrist_angle" joint="right/wrist_angle" ctrlrange="-1.8675 2.23402"/>
+    <position class="wrist_rotate" name="right/wrist_rotate" joint="right/wrist_rotate" ctrlrange="-3.14158 3.14158"/>
     <position class="finger" name="right/gripper" joint="right/left_finger"/>
   </actuator>
 </mujoco>

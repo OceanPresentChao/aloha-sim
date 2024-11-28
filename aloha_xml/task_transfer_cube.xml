@@ -1,0 +1,37 @@
+<mujoco model="transfer_cube_task">
+  <!-- 引用原始场景 -->
+  <include file="scene.xml"/>
+
+  <worldbody>
+    <!-- 添加若干个动态方块，确保它们放在桌子上 -->
+    <body name="red_box">
+      <joint name="red_box_joint" type="free" frictionloss="0.01"/>
+      <inertial pos="0 0 0" mass="0.05" diaginertia="0.002 0.002 0.002"/>
+      <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0 0 0" size="0.02 0.02 0.02" type="box" name="red_box" rgba="1 0 0 1"/>
+    </body>
+
+    <body name="green_box">
+      <joint name="green_box_joint" type="free" frictionloss="0.01"/>
+      <inertial pos="0 0 0" mass="0.05" diaginertia="0.002 0.002 0.002"/>
+      <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0 0 0" size="0.02 0.02 0.02" type="box" name="green_box" rgba="0 1 0 1"/>
+    </body>
+
+    <body name="blue_box">
+      <joint name="blue_box_joint" type="free" frictionloss="0.01"/>
+      <inertial pos="0 0 0" mass="0.05" diaginertia="0.002 0.002 0.002"/>
+      <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0 0 0" size="0.02 0.02 0.02" type="box" name="blue_box" rgba="0 0 1 1"/>
+    </body>
+
+    <body name="yellow_box">
+      <joint name="yellow_box_joint" type="free" frictionloss="0.01"/>
+      <inertial pos="0 0 0" mass="0.05" diaginertia="0.002 0.002 0.002"/>
+      <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0 0 0" size="0.02 0.02 0.02" type="box" name="yellow_box" rgba="1 1 0 1"/>
+    </body>
+
+    <body name="purple_box">
+      <joint name="purple_box_joint" type="free" frictionloss="0.01"/>
+      <inertial pos="0 0 0" mass="0.05" diaginertia="0.002 0.002 0.002"/>
+      <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0 0 0" size="0.02 0.02 0.02" type="box" name="purple_box" rgba="0.5 0 0.5 1"/>
+    </body>
+  </worldbody>
+</mujoco>
