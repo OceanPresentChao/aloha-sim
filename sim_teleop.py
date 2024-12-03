@@ -5,6 +5,7 @@ from aloha_gym import make_aloha_env
 from aloha_gym.constants import (
     UNNORMALIZE_PUPPET_GRIPPER_QPOS,
 )
+from utils import save_episode
 
 # In Real Robot, they are different according to your robot hardware
 MASTER_GRIPPER_JOINT_OPEN = 0.03267
@@ -62,6 +63,7 @@ def sim_teleop():
     env = make_aloha_env(task_name="transfer_cube")
     obs = env.reset()
     episode = [obs]
+    actions = []
     plt.ion()
     ax = plt.subplot()
     plt_img = ax.imshow(env.render())
@@ -69,10 +71,14 @@ def sim_teleop():
     for t in range(1000):
         action = get_action(master_bot_left, master_bot_right)
         obs, reward, terminated, truncated, info = env.step(action)
+
         episode.append(obs)
+        actions.append(action)
 
         plt_img.set_data(env.render())
         plt.pause(0.02)
+
+    save_episode(episode, actions, "./transfer_cube.hdf5")
 
 
 if __name__ == "__main__":

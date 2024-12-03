@@ -144,10 +144,10 @@ class AlohaEnv(MujocoEnv):
         obs["qpos"] = self.get_qpos()
         obs["qvel"] = self.get_qvel()
         obs["images"] = {}
-        obs["images"]["top"] = self.get_image("overhead_cam")
-        obs["images"]["low"] = self.get_image("worms_eye_cam")
-        obs["images"]["left_wrist"] = self.get_image("wrist_cam_left")
-        obs["images"]["right_wrist"] = self.get_image("wrist_cam_right")
+        obs["images"]["cam_high"] = self.get_image("overhead_cam")
+        obs["images"]["cam_low"] = self.get_image("worms_eye_cam")
+        obs["images"]["cam_left_wrist"] = self.get_image("wrist_cam_left")
+        obs["images"]["cam_right_wrist"] = self.get_image("wrist_cam_right")
         return obs
 
     def get_reward(self):
