@@ -2,6 +2,12 @@ import cv2
 import numpy as np
 
 
+def check_render():
+    from mujoco.egl import egl_ext as EGL
+
+    print("EGL.eglQueryDevicesEXT():", len(EGL.eglQueryDevicesEXT()))
+
+
 def save_videos(video, dt, video_path=None):
     if isinstance(video, list):
         # print(video[0])

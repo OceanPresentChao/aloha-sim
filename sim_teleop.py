@@ -1,0 +1,79 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+from aloha_gym import make_aloha_env
+from aloha_gym.constants import (
+    UNNORMALIZE_PUPPET_GRIPPER_QPOS,
+)
+
+# In Real Robot, they are different according to your robot hardware
+MASTER_GRIPPER_JOINT_OPEN = 0.03267
+MASTER_GRIPPER_JOINT_CLOSE = 0.01874
+
+
+def NORMALIZE_MASTER_GRIPPER_JOINT(joint):
+    return (joint - MASTER_GRIPPER_JOINT_CLOSE) / (
+        MASTER_GRIPPER_JOINT_OPEN - MASTER_GRIPPER_JOINT_CLOSE
+    )
+
+
+def get_action(master_bot_left, master_bot_right):
+    action = np.zeros(14)
+    # arm action
+    action[:6] = master_bot_left.dxl.joint_states.position[:6]
+    action[7 : 7 + 6] = master_bot_right.dxl.joint_states.position[:6]
+    # gripper action
+    left_gripper_joint = master_bot_left.dxl.joint_states.position[7]
+    right_gripper_joint = master_bot_right.dxl.joint_states.position[7]
+    left_gripper_qpos = UNNORMALIZE_PUPPET_GRIPPER_QPOS(
+        NORMALIZE_MASTER_GRIPPER_JOINT(left_gripper_joint)
+    )
+    right_gripper_qpos = UNNORMALIZE_PUPPET_GRIPPER_QPOS(
+        NORMALIZE_MASTER_GRIPPER_JOINT(right_gripper_joint)
+    )
+    print(
+        "left_gripper_joint", left_gripper_joint, "left_gripper_qpos", left_gripper_qpos
+    )
+    action[6] = left_gripper_qpos
+    action[7 + 6] = right_gripper_qpos
+    return action
+
+
+def sim_teleop():
+    """Testing teleoperation in sim with ALOHA. Requires hardware and ALOHA repo to work."""
+    from interbotix_xs_modules.arm import InterbotixManipulatorXS
+
+    # source of data
+    master_bot_left = InterbotixManipulatorXS(
+        robot_model="wx250s",
+        group_name="arm",
+        gripper_name="gripper",
+        robot_name="master_left",
+        init_node=True,
+    )
+    master_bot_right = InterbotixManipulatorXS(
+        robot_model="wx250s",
+        group_name="arm",
+        gripper_name="gripper",
+        robot_name="master_right",
+        init_node=False,
+    )
+
+    env = make_aloha_env(task_name="transfer_cube")
+    obs = env.reset()
+    episode = [obs]
+    plt.ion()
+    ax = plt.subplot()
+    plt_img = ax.imshow(env.render())
+
+    for t in range(1000):
+        action = get_action(master_bot_left, master_bot_right)
+        obs, reward, terminated, truncated, info = env.step(action)
+        episode.append(obs)
+
+        plt_img.set_data(env.render())
+        plt.pause(0.02)
+
+
+if __name__ == "__main__":
+    sim_teleop()

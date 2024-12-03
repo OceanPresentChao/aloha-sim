@@ -1,21 +1,21 @@
 import numpy as np
+import os
 from os import path
-import gymnasium as gym
 import imageio
+from aloha_gym import make_aloha_env
 
-from rdt_gym import aloha_env
-from scripts.visualize_episode import save_videos
-from rdt_gym.task.task_none import NoneTask
 
-gym.register(
-    id="aloha",
-    entry_point=aloha_env.AlohaEnv,
-)
+from utils import save_videos
 
-output_path = path.join(path.dirname(__file__), "./data")
-task = NoneTask()
-env = gym.make("aloha", task=task, max_episode_steps=30)
 
+output_path = path.join(path.dirname(__file__), "./output/transfer_cube")
+
+if not path.exists(output_path):
+    print(f"create dir {output_path}")
+    os.makedirs(output_path)
+
+
+env = make_aloha_env(task_name="transfer_cube")
 observation, info = env.reset()
 frames = []
 obs_frames = []

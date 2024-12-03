@@ -86,8 +86,8 @@ class AlohaEnv(MujocoEnv):
     def get_xml_file(self) -> str:
         return self.task.get_xml_file()
 
+    # len: len(Actuator)
     def get_qpos(self):
-        # len: len(JOINTS)
         qpos_raw = self.data.qpos.copy()
         left_qpos_raw = qpos_raw[:8]
         right_qpos_raw = qpos_raw[8:16]
@@ -100,8 +100,8 @@ class AlohaEnv(MujocoEnv):
         )
         return qpos
 
+    # len: len(Actuator)
     def get_qvel(self):
-        # len: len(JOINTS)
         qvel_raw = self.data.qvel.copy()
         left_qvel_raw = qvel_raw[:8]
         right_qvel_raw = qvel_raw[8:16]
