@@ -2,20 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from aloha_gym import make_aloha_env
-from aloha_gym.constants import (
+from constants import (
     UNNORMALIZE_PUPPET_GRIPPER_QPOS,
+    NORMALIZE_MASTER_GRIPPER_JOINT,
 )
-from utils import save_episode
-
-# In Real Robot, they are different according to your robot hardware
-MASTER_GRIPPER_JOINT_OPEN = 0.03267
-MASTER_GRIPPER_JOINT_CLOSE = 0.01874
-
-
-def NORMALIZE_MASTER_GRIPPER_JOINT(joint):
-    return (joint - MASTER_GRIPPER_JOINT_CLOSE) / (
-        MASTER_GRIPPER_JOINT_OPEN - MASTER_GRIPPER_JOINT_CLOSE
-    )
 
 
 def get_action(master_bot_left, master_bot_right):
@@ -77,8 +67,7 @@ def sim_teleop():
 
         plt_img.set_data(env.render())
         plt.pause(0.02)
-
-    save_episode(episode, actions, "./transfer_cube.hdf5")
+    plt.close()
 
 
 if __name__ == "__main__":

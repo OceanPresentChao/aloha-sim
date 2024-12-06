@@ -1,12 +1,13 @@
 import gymnasium as gym
 
 
-from .aloha_env import AlohaEnv
+from .aloha_env import AlohaEnv, SIM_CAMS
 from .task.task_none import NoneTask
 from .task.task_transfer_cube import TransferCubeTask
 
 
-def make_aloha_env(task_name: str) -> AlohaEnv:
+def make_aloha_env(**kwargs) -> AlohaEnv:
+    task_name = kwargs["task_name"]
     assert task_name in [NoneTask.get_task_name(), TransferCubeTask.get_task_name()]
     gym.register(
         id="aloha",
@@ -18,7 +19,7 @@ def make_aloha_env(task_name: str) -> AlohaEnv:
         return env
     elif task_name == TransferCubeTask.get_task_name():
         task = TransferCubeTask()
-        env = gym.make("aloha", task=task)
+        env = gym.make("aloha", task=task, **kwargs)
         return env
     else:
         raise NotImplementedError()

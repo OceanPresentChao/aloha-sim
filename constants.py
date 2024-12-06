@@ -1,5 +1,17 @@
 from os import path
 
+### Task parameters
+DATA_DIR = "<put your data dir here>"
+SIM_TASK_CONFIGS = {
+    "sim_transfer_cube": {
+        "dataset_dir": DATA_DIR + "/sim_transfer_cube",
+        "num_episodes": 50,
+        "episode_len": 400,
+        "camera_names": ["top"],
+    },
+}
+
+
 XML_DIR = path.join(path.dirname(__file__), "../aloha_xml")
 
 ### Simulation envs fixed constants
@@ -135,4 +147,56 @@ def UNNORMALIZE_PUPPET_GRIPPER_QPOS(x):
     return (
         x * (PUPPET_GRIPPER_QPOS_OPEN - PUPPET_GRIPPER_QPOS_CLOSE)
         + PUPPET_GRIPPER_QPOS_CLOSE
+    )
+
+
+# Gripper joint limits (qpos[6])
+# They are different according to your real robot
+MASTER_GRIPPER_JOINT_OPEN = 0.85136
+MASTER_GRIPPER_JOINT_CLOSE = -0.056757
+PUPPET_GRIPPER_JOINT_OPEN = -1.477224
+PUPPET_GRIPPER_JOINT_CLOSE = -2.584758
+
+PUPPET_START_ARM_POSE = [
+    0,
+    -0.96,
+    1.16,
+    0,
+    -0.3,
+    0,
+    PUPPET_GRIPPER_JOINT_OPEN,
+    -PUPPET_GRIPPER_JOINT_OPEN,
+    0,
+    -0.96,
+    1.16,
+    0,
+    -0.3,
+    0,
+    PUPPET_GRIPPER_JOINT_OPEN,
+    -PUPPET_GRIPPER_JOINT_OPEN,
+]
+
+MASTER_START_ARM_POSE = [
+    0,
+    -0.96,
+    1.16,
+    0,
+    -0.3,
+    0.0,
+    MASTER_GRIPPER_JOINT_OPEN,
+    -MASTER_GRIPPER_JOINT_OPEN,
+    0,
+    -0.96,
+    1.16,
+    0,
+    -0.3,
+    0.0,
+    MASTER_GRIPPER_JOINT_OPEN,
+    -MASTER_GRIPPER_JOINT_OPEN,
+]
+
+
+def NORMALIZE_MASTER_GRIPPER_JOINT(joint):
+    return (joint - MASTER_GRIPPER_JOINT_CLOSE) / (
+        MASTER_GRIPPER_JOINT_OPEN - MASTER_GRIPPER_JOINT_CLOSE
     )

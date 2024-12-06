@@ -4,7 +4,7 @@ from os import path
 import numpy as np
 from typing import TYPE_CHECKING
 
-from ..constants import XML_DIR, INITIAL_ARM_QPOS
+from constants import XML_DIR, INITIAL_ARM_QPOS
 
 if TYPE_CHECKING:
     from ..aloha_env import AlohaEnv  # 仅在类型检查时导入

@@ -5,7 +5,7 @@ import imageio
 from aloha_gym import make_aloha_env
 
 
-from utils import save_videos
+from scripts.visualize_episodes import save_videos
 
 
 output_path = path.join(path.dirname(__file__), "./output/transfer_cube")
@@ -23,7 +23,7 @@ obs_frames = []
 
 imageio.imsave(f"{output_path}/init.jpg", env.render())
 
-for _ in range(100):
+for _ in range(500):
     action = env.action_space.sample()
     # print(f"sample action:{len(action)}")
     observation, reward, terminated, truncated, info = env.step(action)

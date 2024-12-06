@@ -5,7 +5,7 @@ import numpy as np
 import math
 import mujoco
 
-from .constants import (
+from constants import (
     UNNORMALIZE_PUPPET_GRIPPER_QPOS,
     NORMALIZE_PUPPET_GRIPPER_QPOS,
     DT,
@@ -16,6 +16,16 @@ from .constants import (
 from .task.base import AlohaTask
 
 
+SIM_CAMS = [
+    "wrist_cam_left",
+    "wrist_cam_right",
+    "overhead_cam",
+    "worms_eye_cam",
+    "teleoperator_pov",
+    "collaborator_pov",
+]
+
+
 class AlohaEnv(MujocoEnv):
     def __init__(
         self,
@@ -24,8 +34,10 @@ class AlohaEnv(MujocoEnv):
         observation_width: int = 640,
         observation_height: int = 480,
         render_mode: str = "rgb_array",
+        render_cam: str = "teleoperator_pov",
         **kwargs,
     ):
+        self.render_cam = render_cam
         self.task = task
         self.observation_width = observation_width
         self.observation_height = observation_height
@@ -83,6 +95,10 @@ class AlohaEnv(MujocoEnv):
 
         assert self.render_mode in self.metadata["render_modes"]
 
+    def set_render_cam(self, cam: str):
+        assert cam in SIM_CAMS
+        self.render_cam = cam
+
     def get_xml_file(self) -> str:
         return self.task.get_xml_file()
 
@@ -118,14 +134,7 @@ class AlohaEnv(MujocoEnv):
         self,
         camera_name: str,
     ):
-        assert camera_name in [
-            "wrist_cam_left",
-            "wrist_cam_right",
-            "overhead_cam",
-            "worms_eye_cam",
-            "teleoperator_pov",
-            "collaborator_pov",
-        ]
+        assert camera_name in SIM_CAMS
         camera_id = mujoco.mj_name2id(
             self.model,
             mujoco.mjtObj.mjOBJ_CAMERA,
@@ -154,7 +163,7 @@ class AlohaEnv(MujocoEnv):
         return self.task.get_reward(self)
 
     def render(self):
-        return self.get_image("collaborator_pov")
+        return self.get_image(self.render_cam)
 
     def reset_model(self):
         # key_ctrl = self.model.key_ctrl[0 * self.model.nu : (0 + 1) * self.model.nu]
