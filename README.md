@@ -2,6 +2,8 @@
 
 This repository contains MJCF file of [ALOHA](https://github.com/tonyzhaozh/aloha) and robot learning env based on [gymnasium](https://gymnasium.farama.org/index.html)
 
+![aloha](./media/aloha.png)
+
 ## What's new?
 
 1. we use ALOHA Model provided by [mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/aloha), which has higher model quality

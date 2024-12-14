@@ -6,8 +6,7 @@ from .task.task_none import NoneTask
 from .task.task_transfer_cube import TransferCubeTask
 
 
-def make_aloha_env(**kwargs) -> AlohaEnv:
-    task_name = kwargs["task_name"]
+def make_aloha_env(task_name: str, **kwargs) -> AlohaEnv:
     assert task_name in [NoneTask.get_task_name(), TransferCubeTask.get_task_name()]
     gym.register(
         id="aloha",
